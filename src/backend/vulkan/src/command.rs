@@ -274,6 +274,8 @@ impl command::Buffer<Resources> for Buffer {
     fn call_draw(&mut self, _: VertexCount, _: VertexCount, _: Option<command::InstanceParams>) {}
     fn call_draw_indexed(&mut self, _: VertexCount, _: VertexCount,
                          _: VertexCount, _: Option<command::InstanceParams>) {}
+    fn copy_buffer_supported(&self) -> bool { true }
+
 }
 
 
@@ -300,6 +302,7 @@ impl GraphicsQueue {
             constant_buffer_supported: false,
             unordered_access_view_supported: false,
             separate_blending_slots_supported: false,
+            copy_buffer_supported: true,
         };
         GraphicsQueue {
             share: share,

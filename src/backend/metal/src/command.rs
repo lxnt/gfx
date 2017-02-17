@@ -446,4 +446,6 @@ impl command::Buffer<Resources> for CommandBuffer {
             }
         }
     }
+
+    fn copy_buffer(&self) -> bool { true }
 }

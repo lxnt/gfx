@@ -376,4 +376,5 @@ impl<P: Parser> command::Buffer<Resources> for CommandBuffer<P> {
         });
     }
 
+    fn copy_buffer(&self) -> bool { true }
 }

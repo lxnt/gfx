@@ -82,6 +82,8 @@ pub trait Buffer<R: Resources>: Send {
     fn call_draw(&mut self, VertexCount, VertexCount, Option<InstanceParams>);
     /// Draw a primitive with index buffer
     fn call_draw_indexed(&mut self, VertexCount, VertexCount, VertexCount, Option<InstanceParams>);
+    /// Is copy_buffer supported TODO: fix this dumbness
+    fn copy_buffer_supported(&self) -> bool;
 }
 
 macro_rules! impl_clear {

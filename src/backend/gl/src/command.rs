@@ -15,11 +15,11 @@
 #![allow(missing_docs)]
 
 use gl;
+use core;
 use core::{self as c, command, state as s};
 use core::target::{ColorValue, Depth, Mirror, Rect, Stencil};
 use {Buffer, BufferElement, Program, FrameBuffer, Texture,
      NewTexture, Resources, PipelineState, ResourceView, TargetView};
-
 
 fn primitive_to_gl(primitive: c::Primitive) -> gl::types::GLenum {
     use core::Primitive::*;
@@ -178,16 +178,18 @@ pub struct CommandBuffer {
     fbo: FrameBuffer,
     cache: Cache,
     active_attribs: usize,
+    caps: core::Capabilities,
 }
 
 impl CommandBuffer {
-    pub fn new(fbo: FrameBuffer) -> CommandBuffer {
+    pub fn new(caps: core::Capabilities, fbo: FrameBuffer) -> CommandBuffer {
         CommandBuffer {
             buf: Vec::new(),
             data: DataBuffer::new(),
             fbo: fbo,
             cache: Cache::new(),
             active_attribs: 0,
+            caps: caps,
         }
     }
     fn is_main_target(&self, tv: Option<TargetView>) -> bool {
@@ -393,4 +395,6 @@ impl command::Buffer<Resources> for CommandBuffer {
         self.buf.push(Command::DrawIndexed(self.cache.primitive,
             gl_index, RawOffset(offset as *const gl::types::GLvoid), count, base, instances));
     }
+
+    fn copy_buffer_supported(&self) -> bool { self.caps.copy_buffer_supported }
 }

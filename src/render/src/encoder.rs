@@ -46,6 +46,7 @@ pub enum CopyError {
     },
     NoSrcBindFlag,
     NoDstBindFlag,
+    NotSupported,
 }
 
 pub type CopyResult = Result<(), CopyError>;
@@ -77,6 +78,7 @@ impl Error for CopyError {
             Overlap {..} => "Copy source and destination are overlapping",
             NoSrcBindFlag => "Copy source is missing `TRANSFER_SRC`",
             NoDstBindFlag => "Copy destination is missing `TRANSFER_DST`",
+            NotSupported => "Copy operation is not supported in this GL version",
         }
     }
 }
@@ -192,6 +194,9 @@ impl<R: Resources, C: command::Buffer<R>> Encoder<R, C> {
     /// Copy part of a buffer to another
     pub fn copy_buffer<T: Pod>(&mut self, src: &handle::Buffer<R, T>, dst: &handle::Buffer<R, T>,
                                src_offset: usize, dst_offset: usize, size: usize) -> CopyResult {
+        if !self.command_buffer.copy_buffer_supported() {
+            return Err(CopyError::NotSupported);
+        }
         if !src.get_info().bind.contains(memory::TRANSFER_SRC) {
             return Err(CopyError::NoSrcBindFlag);
         }

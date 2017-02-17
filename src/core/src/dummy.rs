@@ -74,6 +74,7 @@ impl DummyDevice {
             constant_buffer_supported: false,
             unordered_access_view_supported: false,
             separate_blending_slots_supported: false,
+            copy_buffer_supported: false,
         };
         DummyDevice {
             capabilities: caps,
@@ -109,6 +110,7 @@ impl command::Buffer<DummyResources> for DummyCommandBuffer {
     fn call_draw(&mut self, _: VertexCount, _: VertexCount, _: Option<command::InstanceParams>) {}
     fn call_draw_indexed(&mut self, _: VertexCount, _: VertexCount,
                          _: VertexCount, _: Option<command::InstanceParams>) {}
+    fn copy_buffer_supported(&self) -> bool { false }
 }
 
 impl Device for DummyDevice {

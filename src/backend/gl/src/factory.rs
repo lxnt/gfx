@@ -89,7 +89,7 @@ impl Factory {
     }
 
     pub fn create_command_buffer(&mut self) -> CommandBuffer {
-        CommandBuffer::new(self.create_fbo_internal())
+        CommandBuffer::new(self.share.capabilities, self.create_fbo_internal())
     }
 
     fn create_fbo_internal(&mut self) -> gl::types::GLuint {
